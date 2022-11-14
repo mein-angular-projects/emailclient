@@ -31,9 +31,14 @@
     <p *ngIf="authForm.errors.passwordsDontMatch">
       Password and password confirmation must match
     </p>
+    <p *ngIf="authForm.errors.noConnection">
+      Check your internet connection, failed to sign-up
+    </p>
+    <p *ngIf="authForm.errors.unknownError">
+      Unknown error..Please try after some time.
+    </p>
   </div>
   <div>
     <button class="ui submit button primary">Submit</button>
   </div>
-  {{ authForm.errors | json }}
 </form>

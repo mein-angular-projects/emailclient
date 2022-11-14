@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatchPassword } from 'src/app/validators/match-password';
 import { UniqueUsername } from 'src/app/validators/unique-username';
 import { AuthService } from '../auth.service';
+
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
+
 export class SignupComponent implements OnInit {
   authForm = new FormGroup({
     username: new FormControl('',[
@@ -30,16 +35,33 @@ export class SignupComponent implements OnInit {
   constructor(
     private matchPassword: MatchPassword,
     private uniqueUsername: UniqueUsername,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
+
 
   onSubmit(){
     if(this.authForm.invalid){
       return;
     }
-    console.log(this.authForm.value);
+    console.log("!!!!!!!!",this.authForm.value);
+    this.authService.signup(this.authForm.value)
+    .subscribe({
+      next: response =>{
+        console.log(this);
+        this.router.navigateByUrl('inbox');
+      },
+      error: err =>{
+        if(!err.status){
+          this.authForm.setErrors({noConnection: true});
+        }
+        else{
+            this.authForm.setErrors({unknownError:true})
+        }
+      }
+    })
   }
 
 }
