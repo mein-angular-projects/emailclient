@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { ResourceLoader } from '@angular/compiler';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -24,7 +25,9 @@ export class SigninComponent implements OnInit {
   constructor(private authService: AuthService,
     private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() { return false; };
+  }
 
   onSubmit() {
     if (this.authForm.invalid) {
@@ -33,6 +36,7 @@ export class SigninComponent implements OnInit {
     this.authService.signin(this.authForm.value).subscribe({
      next: () => {
       this.router.navigateByUrl('/inbox');
+      
      },
      error: ({error}) => {
       if(error.username || error.password){

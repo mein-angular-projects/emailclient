@@ -16,7 +16,7 @@ import { filter, Observable, tap } from 'rxjs';
 export class AuthHttpInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         //throw new Error('Method not implemented.');
-        console.log(req);
+        //console.log(req);
         const modifiedReq = req.clone({
             withCredentials: true
         });
